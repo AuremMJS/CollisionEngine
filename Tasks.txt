@@ -1,0 +1,26 @@
+1. Find Min and Max Vertices - DONE
+2. Build AABB - DONE
+3. Parse Obj and output AABB obj - DONE
+4. Render the grid using a opacity map
+	a. Opacity Map - DONE
+	b. Set texture coords - DONE
+	c. fragment shader - DONE
+5. Reorganise project structure with math functions in seperate lib - DONE
+6. Construct vertices for AABB - DONE
+7. Code refactoring
+8. Render AABB in Vulkan
+	a. Make graphics pipeline generic
+9. Subdivide
+10. Construct vertices for subdivided AABB
+11. Render subdivided AABB
+12. Recursive Collision check in octree
+13. Construct Collision Loop
+14. Call collision loop
+15. Add another object
+16. Write a log on collision
+17. Do an action on collision
+18. Add GUI to enable/disable collision
+19. Add GUI to enable/disable rendering AABBs
+20. Add GUI to specify octree depth
+21. Fix AABB rendering issue
+22. Change glm::mat4 to Matrix4
