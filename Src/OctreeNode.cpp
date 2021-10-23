@@ -165,10 +165,10 @@ void OctreeNode::Translate(Vec3 translateVec)
 
 bool OctreeNode::CheckCollision(OctreeNode *otherNode, Vec3 currentNodePosition, Vec3 otherNodePosition, std::vector<OctreeNode*> *collidedLeaves)
 {
-	/*if (!hasMeshVertex)
+	if (!hasMeshVertex)
 	{
 		return false;
-	}*/
+	}
 	Vec3 currNodeMinPosition = minPosition;
 	Vec3 currNodeMaxPosition = maxPosition;
 	Vec3 otherNodeMinPosition = otherNode->minPosition;
@@ -191,8 +191,8 @@ bool OctreeNode::CheckCollision(OctreeNode *otherNode, Vec3 currentNodePosition,
 	isColliding = false;
 	for (int i = 0; i < 8; i++)
 	{
-		isColliding = isColliding || subNodes[i].CheckCollision(otherNode,
-			currentNodePosition,otherNodePosition, collidedLeaves);
+		isColliding = subNodes[i].CheckCollision(otherNode,
+			currentNodePosition,otherNodePosition, collidedLeaves) || isColliding;
 	}
 	return isColliding;
 }

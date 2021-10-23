@@ -8,7 +8,6 @@ AxisAlignedBoundingBox::AxisAlignedBoundingBox(std::vector<Vec3> mVertices, int 
 	octree->InitMeshVertexInfo(mVertices);
   	octree->GetLeafVertices(octreeVertices);
 	InitOctreeIndices();
-	collidedLeafNodes = new std::vector<OctreeNode*>;
 }
 
 void AxisAlignedBoundingBox::Construct(std::vector<Vec3> mVertices)
@@ -167,34 +166,24 @@ bool AxisAlignedBoundingBox::CheckCollision(AxisAlignedBoundingBox *otherAABB)
 {
 	bool isCollided = false;
 	OctreeNode* otherOctree = otherAABB->octree;
-	collidedLeafNodes->clear();
-	//if (octree->CheckCollision(otherOctree, position, otherAABB->position, collidedLeafNodes))
-	//{
-	//	std::vector<OctreeNode*> otherTreeCollidedLeafNodes;
-	//	if (otherOctree->CheckCollision(octree,
-	//		otherAABB->position, position, otherTreeCollidedLeafNodes))
-	//	{
-	//		return true;
-	//	}
-	//
-	//}
-
-
+	std::vector<OctreeNode*> *collidedLeafNodes = new std::vector<OctreeNode*>;
 	if (octree->CheckCollision(otherOctree, position, otherAABB->position, collidedLeafNodes))
 	{
-		isCollided = true;
-	/*	std::vector<OctreeNode*> otherTreeCollidedLeafNodes;
-		for (int i = 0; i < collidedLeafNodes.size(); i++)
+		std::vector<OctreeNode*> *otherTreeCollidedLeafNodes = new std::vector<OctreeNode*>;
+		for (int i = 0; i < collidedLeafNodes->size(); i++)
 		{
-			isCollided = isCollided ||
-				otherOctree->CheckCollision(collidedLeafNodes[i],
-					otherAABB->position, position, &otherTreeCollidedLeafNodes);
+			isCollided =
+				otherOctree->CheckCollision(collidedLeafNodes->at(i),
+					otherAABB->position, position, otherTreeCollidedLeafNodes) || isCollided;
 			if (isCollided)
 			{
+				delete otherTreeCollidedLeafNodes;
+				delete collidedLeafNodes;
 				return isCollided;
 			}
-		}*/
+		}
 	}
+	delete collidedLeafNodes;
 	return isCollided;
 }
 

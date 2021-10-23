@@ -24,8 +24,6 @@ private:
 	std::vector<Vec3> octreeVertices;
 	std::vector<VertexIndices> octreeIndices;
 
-	std::vector<OctreeNode*> *collidedLeafNodes;
-
 	OctreeNode *octree;
 
 	void Construct(std::vector<Vec3> mVertices);

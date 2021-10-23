@@ -18,11 +18,11 @@
 14. Add current position of the object in the collision logic - DONE
 15. Construct Collision Loop - DONE
 16. Call collision loop - DONE
-17. Ignore Collision if node doesn't have mesh vertices
+17. Ignore Collision if node doesn't have mesh vertices - DONE
 18. Add another object - DONE
 19. Do an action on collision - Display the meshes in red colour - DONE
 20. Add GUI to enable/disable collision - DONE
-21. Add GUI to enable/disable rendering AABBs
+21. Add GUI to enable/disable rendering AABBs - DONE
 O1. Fix AABB rendering issue
 O2. Change glm::mat4 to Matrix4
 O3. Add octree depth in mesh constructor
