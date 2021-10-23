@@ -1,16 +1,35 @@
 #include "Collider.h"
+#include "CollisionEngine.h"
 #include <fstream>
 #include <string>
 
-Collider::Collider(std::vector<Vec3> mVertices)
+Collider::Collider(std::string objectName, std::vector<Vec3> mVertices, int octreeDepth)
 {
 	vertices = mVertices;
-	axisAlignedBoundingBox = new AxisAlignedBoundingBox(mVertices);
+	axisAlignedBoundingBox = new AxisAlignedBoundingBox(mVertices, octreeDepth);
+	CollidedObjects = new std::vector<std::string>();
+	CollisionEngine::GetInstance()->AddCollider(objectName, this);
 }
 
 AxisAlignedBoundingBox* Collider::GetAABB()
 {
 	return axisAlignedBoundingBox;
+}
+
+bool Collider::CheckCollision(Collider * otherCollider)
+{
+	return axisAlignedBoundingBox->CheckCollision(otherCollider->axisAlignedBoundingBox);
+}
+
+void Collider::Translate(Vec3 translateVec)
+{
+	this->position = this->position + translateVec;
+	axisAlignedBoundingBox->Translate(translateVec);
+}
+
+bool Collider::IsCollidedWithAny()
+{
+	return CollidedObjects->size();
 }
 
 std::vector<Vec3> ObjParser::ParseObjFile(const char* filename)

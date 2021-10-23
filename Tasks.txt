@@ -7,20 +7,23 @@
 	c. fragment shader - DONE
 5. Reorganise project structure with math functions in seperate lib - DONE
 6. Construct vertices for AABB - DONE
-7. Code refactoring
+7. Code refactoring - DONE
 8. Render AABB in Vulkan
-	a. Make graphics pipeline generic
-9. Subdivide
-10. Construct vertices for subdivided AABB
-11. Render subdivided AABB
-12. Recursive Collision check in octree
-13. Construct Collision Loop
-14. Call collision loop
-15. Add another object
-16. Write a log on collision
-17. Do an action on collision
-18. Add GUI to enable/disable collision
-19. Add GUI to enable/disable rendering AABBs
-20. Add GUI to specify octree depth
-21. Fix AABB rendering issue
-22. Change glm::mat4 to Matrix4
+	a. Make graphics pipeline generic - DONE
+9. Subdivide - DONE
+10. Construct vertices for subdivided AABB -DONE
+11. Render subdivided AABB - DONE
+12. Add octree depth in AABB constructor - DONE
+13. Recursive Collision check in octree - DONE
+14. Add current position of the object in the collision logic - DONE
+15. Construct Collision Loop - DONE
+16. Call collision loop - DONE
+17. Ignore Collision if node doesn't have mesh vertices
+18. Add another object - DONE
+19. Do an action on collision - Display the meshes in red colour - DONE
+20. Add GUI to enable/disable collision - DONE
+21. Add GUI to enable/disable rendering AABBs
+O1. Fix AABB rendering issue
+O2. Change glm::mat4 to Matrix4
+O3. Add octree depth in mesh constructor
+O4. Move Descriptor set layout and descriptor pool to mesh

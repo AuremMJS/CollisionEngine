@@ -18,6 +18,11 @@ public:
 		z = mZ;
 	}
 
+	Vec3 operator+(Vec3 other)
+	{
+		return { x + other.x, y + other.y, z + other.z };
+	}
+
 	double operator*(Vec3 *other)
 	{
 		return x * other->x + y * other->y + z * other->z;
@@ -102,4 +107,3 @@ public:
 	static Matrix4 scale(Vec3 scaleVec);
 	static Matrix4 translate(Vec3 translateVec);
 };
-

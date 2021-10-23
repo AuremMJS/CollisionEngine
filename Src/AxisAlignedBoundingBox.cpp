@@ -1,8 +1,14 @@
 #include "AxisAlignedBoundingBox.h"
 
-AxisAlignedBoundingBox::AxisAlignedBoundingBox(std::vector<Vec3> mVertices)
+AxisAlignedBoundingBox::AxisAlignedBoundingBox(std::vector<Vec3> mVertices, int octreeDepth)
 {
 	Construct(mVertices);
+	octree = new OctreeNode(octreeDepth, minVertex, maxVertex);
+	octree->Subdivide(octreeDepth);
+	octree->InitMeshVertexInfo(mVertices);
+  	octree->GetLeafVertices(octreeVertices);
+	InitOctreeIndices();
+	collidedLeafNodes = new std::vector<OctreeNode*>;
 }
 
 void AxisAlignedBoundingBox::Construct(std::vector<Vec3> mVertices)
@@ -145,4 +151,122 @@ std::vector<Vec3> AxisAlignedBoundingBox::GetTexCoords()
 std::vector<VertexIndices> AxisAlignedBoundingBox::GetIndices()
 {
 	return indices;
+}
+
+std::vector<Vec3> AxisAlignedBoundingBox::GetOctreeVertices()
+{
+	return octreeVertices;
+}
+
+std::vector<VertexIndices> AxisAlignedBoundingBox::GetOctreeIndices()
+{
+	return octreeIndices;
+}
+
+bool AxisAlignedBoundingBox::CheckCollision(AxisAlignedBoundingBox *otherAABB)
+{
+	bool isCollided = false;
+	OctreeNode* otherOctree = otherAABB->octree;
+	collidedLeafNodes->clear();
+	//if (octree->CheckCollision(otherOctree, position, otherAABB->position, collidedLeafNodes))
+	//{
+	//	std::vector<OctreeNode*> otherTreeCollidedLeafNodes;
+	//	if (otherOctree->CheckCollision(octree,
+	//		otherAABB->position, position, otherTreeCollidedLeafNodes))
+	//	{
+	//		return true;
+	//	}
+	//
+	//}
+
+
+	if (octree->CheckCollision(otherOctree, position, otherAABB->position, collidedLeafNodes))
+	{
+		isCollided = true;
+	/*	std::vector<OctreeNode*> otherTreeCollidedLeafNodes;
+		for (int i = 0; i < collidedLeafNodes.size(); i++)
+		{
+			isCollided = isCollided ||
+				otherOctree->CheckCollision(collidedLeafNodes[i],
+					otherAABB->position, position, &otherTreeCollidedLeafNodes);
+			if (isCollided)
+			{
+				return isCollided;
+			}
+		}*/
+	}
+	return isCollided;
+}
+
+void AxisAlignedBoundingBox::Translate(Vec3 translateVec)
+{
+	this->position = this->position + translateVec;
+	octree->Translate(translateVec);
+}
+
+Vec3 AxisAlignedBoundingBox::GetPosition()
+{
+	return position;
+}
+
+void AxisAlignedBoundingBox::InitOctreeIndices()
+{
+	for (int i = 0; i < octreeVertices.size(); i+=8)
+	{
+		InitOctreeNodeIndices(i);
+	}
+}
+
+void AxisAlignedBoundingBox::InitOctreeNodeIndices(int startVertex)
+{
+	// Left Side
+	DrawOctreeSide(startVertex,{ 1, 2, 0, 3 });
+
+	// Right Side
+	DrawOctreeSide(startVertex, { 5, 6, 4, 7 });
+
+	// Top Side
+	DrawOctreeSide(startVertex, { 6, 3, 2, 7 });
+
+	// Bottom Side
+	DrawOctreeSide(startVertex, { 4, 1, 0, 5 });
+
+	// Front Side
+	DrawOctreeSide(startVertex, { 4, 2, 0, 6 });
+
+	// Back Side
+	DrawOctreeSide(startVertex, { 5, 3, 1, 7 });
+}
+
+void AxisAlignedBoundingBox::DrawOctreeSide(int startVertex, std::initializer_list<int> positions)
+{
+	int positionsLength = positions.size();
+	if (positionsLength != 4)
+	{
+		return;
+	}
+
+	VertexIndices i0;
+	i0.positionIndex = startVertex + *(positions.begin() + 0);
+	i0.texCoordIndex = 1;
+
+	VertexIndices i1;
+	i1.positionIndex = startVertex + *(positions.begin() + 1);
+	i1.texCoordIndex = 2;
+
+	VertexIndices i2;
+	i2.positionIndex = startVertex + *(positions.begin() + 2);
+	i2.texCoordIndex = 0;
+
+	VertexIndices i3;
+	i3.positionIndex = startVertex + *(positions.begin() + 3);
+	i3.texCoordIndex = 3;
+
+	octreeIndices.push_back(i0);
+	octreeIndices.push_back(i1);
+	octreeIndices.push_back(i2);
+
+	octreeIndices.push_back(i0);
+	octreeIndices.push_back(i1);
+	octreeIndices.push_back(i3);
 }
